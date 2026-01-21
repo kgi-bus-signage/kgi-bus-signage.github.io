@@ -2,9 +2,13 @@ document.addEventListener("DOMContentLoaded", loaded)
 
 function loaded() {
     messageBox = document.getElementById("message")
-    const url = new URL(document.location.href)
-    if (url.pathname.startsWith("/#/")) {
-        messageBox.innerHTML = `${url.pathname.substring(1)}<wbr/>が${url.hostname}<wbr/>の中に<wbr/>見つかりませんでした`
+    const path = new URL(document.location);
+    const urlParam = path.searchParams.get("url")
+    console.log(urlParam)
+    const url = urlParam ? new URL(`${path.origin}/#${urlParam}`) : path;
+    console.log(url)
+    if (url.hash) {
+        messageBox.innerHTML = `${url.hash.substring(2)}<wbr/>が${url.hostname}<wbr/>の中に<wbr/>見つかりませんでした`
     }
     else {
         messageBox.innerHTML = `${url.pathname.substring(1)}<wbr/>は見つかりませんでした。<br/>パスの最初には#を使用します`
